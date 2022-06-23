@@ -46,6 +46,34 @@ class Client:
             url="https://m.np.playstation.com/api/cloudAssistedNavigation/v1/users/me/clients", params=param)
         return response
 
+    def get_trophies(self, limit=1000):
+        """
+        Gets the trophies total for each game played
+
+        :param limit: The number of items from input max is 1000
+        :type limit: int
+        :returns: List: trophies
+        """
+        limit = min(1000, limit)
+
+        params = {'limit': limit}
+        response = self.request_builder.get(
+            url="https://m.np.playstation.net/api/trophy/v1/users/me/trophyTitles", params=params)
+        return response
+
+    def get_trophies_for_game(self, game_id: str, servicename :str):
+        """
+        Gets the trophies earned for a game
+
+        :returns: List: trophies
+        """
+        param = {
+            "npServiceName": f"{servicename}"
+        }
+        response = self.request_builder.get(
+            url=f"https://m.np.playstation.net/api/trophy/v1/users/me/npCommunicationIds/{game_id}/trophyGroups/all/trophies",params=param)
+        return response
+
     def get_friends(self, limit=1000):
         """
         Gets the friends list and return their account ids
